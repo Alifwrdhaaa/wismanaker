@@ -23,7 +23,7 @@ class DatabaseSeeder extends Seeder
             'password' => bcrypt('password'),
         ]);
 
-        \App\Models\WismaProfile::create([
+        \App\Models\ProfilWisma::create([
             'tentang' => 'Wisma Karya Jasa merupakan penginapan...',
             'whatsapp' => '+62 857-9875-6544',
             'alamat' => 'Wisma Karya Jasa Ciloto, Jl. Raya Puncak Ciloto KM. BD 88, Cianjur 43253',
