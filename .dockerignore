@@ -1,0 +1,11 @@
+vendor/
+node_modules/
+public/build/
+.env
+.git
+.github
+tests/
+storage/logs/*
+storage/app/public/rooms/*
+storage/app/public/facilities/*
+storage/app/public/galleries/*
