@@ -25,7 +25,7 @@ class FasilitasController extends Controller
     {
         $validated = $request->validate([
             'nama' => 'required|string|max:255',
-            'foto' => 'nullable|image|max:2048',
+            'foto' => 'nullable|image|mimes:jpeg,png,jpg,webp|max:2048',
             'deskripsi' => 'nullable|string',
         ]);
 
@@ -35,24 +35,26 @@ class FasilitasController extends Controller
 
         Fasilitas::create($validated);
 
-        return redirect()->route('facilities.index')->with('success', 'Fasilitas berhasil ditambahkan.');
+        return redirect()->route('fasilitas.index')->with('success', 'Fasilitas berhasil ditambahkan.');
     }
 
-    public function show(Facility $facility)
+    public function show(Fasilitas $fasilita)
     {
         //
     }
 
-    public function edit(Fasilitas $facility)
+    public function edit(Fasilitas $fasilita)
     {
+        $facility = $fasilita;
         return view('fasilitas.edit', compact('facility'));
     }
 
-    public function update(Request $request, Fasilitas $facility)
+    public function update(Request $request, Fasilitas $fasilita)
     {
+        $facility = $fasilita;
         $validated = $request->validate([
             'nama' => 'required|string|max:255',
-            'foto' => 'nullable|image|max:2048',
+            'foto' => 'nullable|image|mimes:jpeg,png,jpg,webp|max:2048',
             'deskripsi' => 'nullable|string',
         ]);
 
@@ -65,16 +67,17 @@ class FasilitasController extends Controller
 
         $facility->update($validated);
 
-        return redirect()->route('facilities.index')->with('success', 'Fasilitas berhasil diupdate.');
+        return redirect()->route('fasilitas.index')->with('success', 'Fasilitas berhasil diupdate.');
     }
 
-    public function destroy(Fasilitas $facility)
+    public function destroy(Fasilitas $fasilita)
     {
+        $facility = $fasilita;
         if ($facility->foto) {
             \Illuminate\Support\Facades\Storage::disk('public')->delete($facility->foto);
         }
         $facility->delete();
 
-        return redirect()->route('facilities.index')->with('success', 'Fasilitas berhasil dihapus.');
+        return redirect()->route('fasilitas.index')->with('success', 'Fasilitas berhasil dihapus.');
     }
 }

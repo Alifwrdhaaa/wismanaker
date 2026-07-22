@@ -18,40 +18,57 @@ class ProfilWismaController extends Controller
 
     public function create()
     {
-        // Not used, using index directly
+        return view('profil-wisma.create');
     }
 
     public function store(Request $request)
     {
+        $input = $request->all();
+        // Smart extract src from iframe if admin pastes full iframe
+        if (!empty($input['maps_url']) && preg_match('/src="([^"]+)"/', $input['maps_url'], $matches)) {
+            $input['maps_url'] = $matches[1];
+            $request->replace($input);
+        }
+
         $validated = $request->validate([
             'tentang' => 'nullable|string',
             'whatsapp' => 'nullable|string',
             'instagram' => 'nullable|string',
             'tiktok' => 'nullable|string',
             'alamat' => 'nullable|string',
-            'maps_url' => 'nullable|string',
+            'maps_url' => 'nullable|url',
         ]);
 
         ProfilWisma::create($validated);
 
-        return redirect()->route('wisma-profiles.index')->with('success', 'Profil berhasil disimpan.');
+        return redirect()->route('profil-wisma.index')->with('success', 'Profil berhasil disimpan.');
     }
 
-    public function show(ProfilWisma $wismaProfile)
+    public function show(ProfilWisma $profil_wisma)
     {
         //
     }
 
-    public function edit(ProfilWisma $wismaProfile)
+    public function edit(ProfilWisma $profil_wisma)
     {
+        $wismaProfile = $profil_wisma;
         return view('profil-wisma.edit', compact('wismaProfile'));
     }
 
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, ProfilWisma $wismaProfile)
+    public function update(Request $request, ProfilWisma $profil_wisma)
     {
+        $wismaProfile = $profil_wisma;
+        
+        $input = $request->all();
+        // Smart extract src from iframe if admin pastes full iframe
+        if (!empty($input['maps_url']) && preg_match('/src="([^"]+)"/', $input['maps_url'], $matches)) {
+            $input['maps_url'] = $matches[1];
+            $request->replace($input);
+        }
+
         $validated = $request->validate([
             'tentang' => 'nullable|string',
             'whatsapp' => 'nullable|string|max:255',
@@ -63,12 +80,13 @@ class ProfilWismaController extends Controller
 
         $wismaProfile->update($validated);
 
-        return redirect()->route('wisma-profiles.index')->with('success', 'Profil berhasil diupdate.');
+        return redirect()->route('profil-wisma.index')->with('success', 'Profil berhasil diupdate.');
     }
 
-    public function destroy(WismaProfile $wismaProfile)
+    public function destroy(ProfilWisma $profil_wisma)
     {
+        $wismaProfile = $profil_wisma;
         $wismaProfile->delete();
-        return redirect()->route('wisma-profiles.index')->with('success', 'Profil berhasil dihapus.');
+        return redirect()->route('profil-wisma.index')->with('success', 'Profil berhasil dihapus.');
     }
 }

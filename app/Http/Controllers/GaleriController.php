@@ -25,50 +25,55 @@ class GaleriController extends Controller
     {
         $validated = $request->validate([
             'judul' => 'required|string|max:255',
-            'foto' => 'required|image|max:2048',
+            'foto' => 'required|image|mimes:jpeg,png,jpg,webp|max:2048',
         ]);
 
         $validated['foto'] = $request->file('foto')->store('galleries', 'public');
 
         Galeri::create($validated);
 
-        return redirect()->route('galleries.index')->with('success', 'Foto galeri berhasil ditambahkan.');
+        return redirect()->route('galeri.index')->with('success', 'Foto galeri berhasil ditambahkan.');
     }
 
-    public function show(Galeri $gallery)
+    public function show(Galeri $galeri)
     {
         //
     }
 
-    public function edit(Galeri $gallery)
+    public function edit(Galeri $galeri)
     {
+        $gallery = $galeri;
         return view('galeri.edit', compact('gallery'));
     }
 
-    public function update(Request $request, Galeri $gallery)
+    public function update(Request $request, Galeri $galeri)
     {
+        $gallery = $galeri;
         $validated = $request->validate([
             'judul' => 'required|string|max:255',
-            'foto' => 'nullable|image|max:2048',
+            'foto' => 'nullable|image|mimes:jpeg,png,jpg,webp|max:2048',
         ]);
 
         if ($request->hasFile('foto')) {
-            \Illuminate\Support\Facades\Storage::disk('public')->delete($gallery->foto);
+            if ($gallery->foto) {
+                \Illuminate\Support\Facades\Storage::disk('public')->delete($gallery->foto);
+            }
             $validated['foto'] = $request->file('foto')->store('galleries', 'public');
         }
 
         $gallery->update($validated);
 
-        return redirect()->route('galleries.index')->with('success', 'Foto galeri berhasil diupdate.');
+        return redirect()->route('galeri.index')->with('success', 'Foto galeri berhasil diupdate.');
     }
 
-    public function destroy(Galeri $gallery)
+    public function destroy(Galeri $galeri)
     {
+        $gallery = $galeri;
         if ($gallery->foto) {
             \Illuminate\Support\Facades\Storage::disk('public')->delete($gallery->foto);
         }
         $gallery->delete();
 
-        return redirect()->route('galleries.index')->with('success', 'Foto galeri berhasil dihapus.');
+        return redirect()->route('galeri.index')->with('success', 'Foto galeri berhasil dihapus.');
     }
 }

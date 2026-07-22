@@ -47,18 +47,36 @@ class PublikController extends Controller
         // Fetch bookings to disable dates in calendar
         $bookings = \App\Models\Pemesanan::where('room_id', $room->id)
             ->where('checkout_date', '>=', now()->format('Y-m-d'))
-            ->get(['checkin_date', 'checkout_date']);
+            ->get(['checkin_date', 'checkout_date', 'jumlah_kamar']);
             
-        $bookedDates = [];
+        $dateCounts = [];
         foreach ($bookings as $booking) {
             $start = \Carbon\Carbon::parse($booking->checkin_date);
             $end = \Carbon\Carbon::parse($booking->checkout_date);
-            while ($start->lte($end)) {
-                $bookedDates[] = $start->format('Y-m-d');
+            // Booking occupies the nights between check-in and check-out
+            while ($start->lt($end)) {
+                $dateStr = $start->format('Y-m-d');
+                if (!isset($dateCounts[$dateStr])) {
+                    $dateCounts[$dateStr] = 0;
+                }
+                $dateCounts[$dateStr] += $booking->jumlah_kamar ?? 1;
                 $start->addDay();
             }
         }
+
+        $fullyBookedDates = [];
+        foreach ($dateCounts as $date => $count) {
+            // Blokir tanggal jika total kamar yang dipesan sudah mencapai atau melebihi jumlah unit kamar fisik
+            if ($count >= $room->jumlah_unit) {
+                $fullyBookedDates[] = $date;
+            }
+        }
+
+        $todayStr = now()->format('Y-m-d');
+        $bookedToday = $dateCounts[$todayStr] ?? 0;
+        // Hitung sisa kamar yang tersedia hari ini
+        $availableToday = max(0, $room->jumlah_unit - $bookedToday);
         
-        return view('publik.room_detail', compact('room', 'whatsappNumber', 'bookedDates'));
+        return view('publik.room_detail', compact('room', 'whatsappNumber', 'fullyBookedDates', 'availableToday'));
     }
 }

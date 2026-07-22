@@ -27,7 +27,7 @@ class KamarController extends Controller
             'nama' => 'required|string|max:255',
             'harga' => 'required|integer|min:0',
             'jumlah_unit' => 'required|integer|min:1',
-            'foto' => 'nullable|image|max:2048',
+            'foto' => 'nullable|image|mimes:jpeg,png,jpg,webp|max:2048',
             'deskripsi' => 'nullable|string',
         ]);
 
@@ -37,48 +37,48 @@ class KamarController extends Controller
 
         Kamar::create($validated);
 
-        return redirect()->route('rooms.index')->with('success', 'Kamar berhasil ditambahkan.');
+        return redirect()->route('kamar.index')->with('success', 'Kamar berhasil ditambahkan.');
     }
 
-    public function show(Room $room)
+    public function show(Kamar $kamar)
     {
         //
     }
 
-    public function edit(Kamar $room)
+    public function edit(Kamar $kamar)
     {
-        return view('kamar.edit', compact('room'));
+        return view('kamar.edit', compact('kamar'));
     }
 
-    public function update(Request $request, Kamar $room)
+    public function update(Request $request, Kamar $kamar)
     {
         $validated = $request->validate([
             'nama' => 'required|string|max:255',
             'harga' => 'required|integer|min:0',
             'jumlah_unit' => 'required|integer|min:1',
-            'foto' => 'nullable|image|max:2048',
+            'foto' => 'nullable|image|mimes:jpeg,png,jpg,webp|max:2048',
             'deskripsi' => 'nullable|string',
         ]);
 
         if ($request->hasFile('foto')) {
-            if ($room->foto) {
-                \Illuminate\Support\Facades\Storage::disk('public')->delete($room->foto);
+            if ($kamar->foto) {
+                \Illuminate\Support\Facades\Storage::disk('public')->delete($kamar->foto);
             }
             $validated['foto'] = $request->file('foto')->store('rooms', 'public');
         }
 
-        $room->update($validated);
+        $kamar->update($validated);
 
-        return redirect()->route('rooms.index')->with('success', 'Kamar berhasil diupdate.');
+        return redirect()->route('kamar.index')->with('success', 'Kamar berhasil diupdate.');
     }
 
-    public function destroy(Kamar $room)
+    public function destroy(Kamar $kamar)
     {
-        if ($room->foto) {
-            \Illuminate\Support\Facades\Storage::disk('public')->delete($room->foto);
+        if ($kamar->foto) {
+            \Illuminate\Support\Facades\Storage::disk('public')->delete($kamar->foto);
         }
-        $room->delete();
+        $kamar->delete();
 
-        return redirect()->route('rooms.index')->with('success', 'Kamar berhasil dihapus.');
+        return redirect()->route('kamar.index')->with('success', 'Kamar berhasil dihapus.');
     }
 }

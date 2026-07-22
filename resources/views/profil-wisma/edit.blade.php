@@ -1,63 +1,76 @@
 <x-app-layout>
     <x-slot name="header">
-        <h2 class="font-semibold text-xl text-gray-800 dark:text-gray-200 leading-tight">
-            {{ __('Edit Profil Wisma') }}
-        </h2>
+        <div class="flex items-center space-x-3">
+            <a href="{{ route('profil-wisma.index') }}" class="text-kemnaker-200 hover:text-white transition">
+                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"/></svg>
+            </a>
+            <div>
+                <h2 class="font-bold text-2xl text-white tracking-wide">Edit Profil Wisma</h2>
+                <p class="text-kemnaker-200 text-sm mt-0.5">Informasi utama yang tampil di halaman publik</p>
+            </div>
+        </div>
     </x-slot>
 
-    <div class="py-12">
-        <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
-            <div class="bg-white dark:bg-gray-800 overflow-hidden shadow-sm sm:rounded-lg">
-                <div class="p-6 text-gray-900 dark:text-gray-100">
+    <div class="max-w-3xl">
+        <div class="admin-card rounded-xl p-8">
+            <form method="POST" action="{{ route('profil-wisma.update', $wismaProfile->id) }}" class="space-y-6">
+                @csrf
+                @method('PUT')
 
-                    <form method="POST" action="{{ route('profil-wisma.update', $wismaProfile->id) }}" class="space-y-6">
-                        @csrf
-                        @method('PUT')
-
-                        <div>
-                            <x-input-label for="tentang" :value="__('Tentang Wisma')" />
-                            <textarea id="tentang" name="tentang" rows="4" class="mt-1 block w-full border-gray-300 dark:border-gray-700 dark:bg-gray-900 dark:text-gray-300 focus:border-indigo-500 dark:focus:border-indigo-600 focus:ring-indigo-500 dark:focus:ring-indigo-600 rounded-md shadow-sm">{{ old('tentang', $wismaProfile->tentang) }}</textarea>
-                            <x-input-error :messages="$errors->get('tentang')" class="mt-2" />
-                        </div>
-
-                        <div>
-                            <x-input-label for="whatsapp" :value="__('WhatsApp (Gunakan format +62)')" />
-                            <x-text-input id="whatsapp" name="whatsapp" type="text" class="mt-1 block w-full" :value="old('whatsapp', $wismaProfile->whatsapp)" />
-                            <x-input-error :messages="$errors->get('whatsapp')" class="mt-2" />
-                        </div>
-
-                        <div>
-                            <x-input-label for="instagram" :value="__('Instagram URL')" />
-                            <x-text-input id="instagram" name="instagram" type="text" class="mt-1 block w-full" :value="old('instagram', $wismaProfile->instagram)" />
-                            <x-input-error :messages="$errors->get('instagram')" class="mt-2" />
-                        </div>
-
-                        <div>
-                            <x-input-label for="tiktok" :value="__('TikTok URL')" />
-                            <x-text-input id="tiktok" name="tiktok" type="text" class="mt-1 block w-full" :value="old('tiktok', $wismaProfile->tiktok)" />
-                            <x-input-error :messages="$errors->get('tiktok')" class="mt-2" />
-                        </div>
-
-                        <div>
-                            <x-input-label for="alamat" :value="__('Alamat Lengkap')" />
-                            <textarea id="alamat" name="alamat" rows="3" class="mt-1 block w-full border-gray-300 dark:border-gray-700 dark:bg-gray-900 dark:text-gray-300 focus:border-indigo-500 dark:focus:border-indigo-600 focus:ring-indigo-500 dark:focus:ring-indigo-600 rounded-md shadow-sm">{{ old('alamat', $wismaProfile->alamat) }}</textarea>
-                            <x-input-error :messages="$errors->get('alamat')" class="mt-2" />
-                        </div>
-
-                        <div>
-                            <x-input-label for="maps_url" :value="__('Google Maps URL')" />
-                            <x-text-input id="maps_url" name="maps_url" type="text" class="mt-1 block w-full" :value="old('maps_url', $wismaProfile->maps_url)" />
-                            <x-input-error :messages="$errors->get('maps_url')" class="mt-2" />
-                        </div>
-
-                        <div class="flex items-center gap-4">
-                            <x-primary-button>{{ __('Simpan Perubahan') }}</x-primary-button>
-                            <a href="{{ route('profil-wisma.index') }}" class="text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-gray-100">Batal</a>
-                        </div>
-                    </form>
-
+                <div>
+                    <label for="tentang" class="block text-sm font-semibold text-kemnaker-700 mb-1.5">Tentang Wisma</label>
+                    <textarea id="tentang" name="tentang" rows="4"
+                        class="block w-full rounded-lg border-slate-300 focus:border-kemnaker-500 focus:ring-kemnaker-500 shadow-sm text-slate-800">{{ old('tentang', $wismaProfile->tentang) }}</textarea>
+                    @error('tentang') <p class="mt-1.5 text-sm text-red-600">{{ $message }}</p> @enderror
                 </div>
-            </div>
+
+                <div>
+                    <label for="alamat" class="block text-sm font-semibold text-kemnaker-700 mb-1.5">Alamat Lengkap</label>
+                    <textarea id="alamat" name="alamat" rows="3"
+                        class="block w-full rounded-lg border-slate-300 focus:border-kemnaker-500 focus:ring-kemnaker-500 shadow-sm text-slate-800">{{ old('alamat', $wismaProfile->alamat) }}</textarea>
+                    @error('alamat') <p class="mt-1.5 text-sm text-red-600">{{ $message }}</p> @enderror
+                </div>
+
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    <div>
+                        <label for="whatsapp" class="block text-sm font-semibold text-kemnaker-700 mb-1.5">WhatsApp (format: 6281234…)</label>
+                        <input id="whatsapp" name="whatsapp" type="text" value="{{ old('whatsapp', $wismaProfile->whatsapp) }}"
+                            placeholder="628123456789"
+                            class="block w-full rounded-lg border-slate-300 focus:border-kemnaker-500 focus:ring-kemnaker-500 shadow-sm text-slate-800">
+                        @error('whatsapp') <p class="mt-1.5 text-sm text-red-600">{{ $message }}</p> @enderror
+                    </div>
+                    <div>
+                        <label for="maps_url" class="block text-sm font-semibold text-kemnaker-700 mb-1.5">Google Maps Embed URL</label>
+                        <input id="maps_url" name="maps_url" type="text" value="{{ old('maps_url', $wismaProfile->maps_url) }}"
+                            placeholder="https://www.google.com/maps/embed?..."
+                            class="block w-full rounded-lg border-slate-300 focus:border-kemnaker-500 focus:ring-kemnaker-500 shadow-sm text-slate-800">
+                        <p class="mt-1 text-xs text-slate-400">Gunakan URL embed dari Google Maps (klik Share → Embed)</p>
+                        @error('maps_url') <p class="mt-1.5 text-sm text-red-600">{{ $message }}</p> @enderror
+                    </div>
+                </div>
+
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    <div>
+                        <label for="instagram" class="block text-sm font-semibold text-kemnaker-700 mb-1.5">Instagram URL</label>
+                        <input id="instagram" name="instagram" type="text" value="{{ old('instagram', $wismaProfile->instagram) }}"
+                            placeholder="https://instagram.com/..."
+                            class="block w-full rounded-lg border-slate-300 focus:border-kemnaker-500 focus:ring-kemnaker-500 shadow-sm text-slate-800">
+                        @error('instagram') <p class="mt-1.5 text-sm text-red-600">{{ $message }}</p> @enderror
+                    </div>
+                    <div>
+                        <label for="tiktok" class="block text-sm font-semibold text-kemnaker-700 mb-1.5">TikTok URL</label>
+                        <input id="tiktok" name="tiktok" type="text" value="{{ old('tiktok', $wismaProfile->tiktok) }}"
+                            placeholder="https://tiktok.com/@..."
+                            class="block w-full rounded-lg border-slate-300 focus:border-kemnaker-500 focus:ring-kemnaker-500 shadow-sm text-slate-800">
+                        @error('tiktok') <p class="mt-1.5 text-sm text-red-600">{{ $message }}</p> @enderror
+                    </div>
+                </div>
+
+                <div class="flex items-center gap-4 pt-2 border-t border-slate-100">
+                    <button type="submit" class="btn-kemnaker rounded-lg px-6 py-2.5 mt-2">Simpan Perubahan</button>
+                    <a href="{{ route('profil-wisma.index') }}" class="text-slate-500 hover:text-slate-700 text-sm font-medium transition mt-2">Batal</a>
+                </div>
+            </form>
         </div>
     </div>
 </x-app-layout>

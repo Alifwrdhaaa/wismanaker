@@ -5,10 +5,10 @@ use Illuminate\Support\Facades\Route;
 
 Route::get('/', [\App\Http\Controllers\PublikController::class, 'home'])->name('home');
 Route::get('/tentang-kami', [\App\Http\Controllers\PublikController::class, 'about'])->name('about');
-Route::get('/fasilitas', [\App\Http\Controllers\PublikController::class, 'facilities'])->name('facilities');
-Route::get('/galeri', [\App\Http\Controllers\PublikController::class, 'gallery'])->name('gallery');
-Route::get('/kamar', [\App\Http\Controllers\PublikController::class, 'rooms'])->name('rooms.public');
-Route::get('/kamar/{room}', [\App\Http\Controllers\PublikController::class, 'roomDetail'])->name('rooms.detail');
+Route::get('/daftar-fasilitas', [\App\Http\Controllers\PublikController::class, 'facilities'])->name('fasilitas');
+Route::get('/daftar-galeri', [\App\Http\Controllers\PublikController::class, 'gallery'])->name('gallery');
+Route::get('/daftar-kamar', [\App\Http\Controllers\PublikController::class, 'rooms'])->name('kamar.public');
+Route::get('/daftar-kamar/{room}', [\App\Http\Controllers\PublikController::class, 'roomDetail'])->name('kamar.detail');
 
 Route::get('/dashboard', function () {
     return view('dashboard');

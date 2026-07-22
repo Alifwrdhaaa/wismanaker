@@ -13,6 +13,7 @@ class Pemesanan extends Model
         'nomor_hp',
         'checkin_date',
         'checkout_date',
+        'jumlah_kamar',
         'catatan',
     ];
 

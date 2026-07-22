@@ -1,75 +1,111 @@
 <x-app-layout>
     <x-slot name="header">
         <div class="flex justify-between items-center">
-            <h2 class="font-semibold text-xl text-gray-800 dark:text-gray-200 leading-tight">
-                {{ __('Kamar & Ruangan') }}
+            <h2 class="font-serif font-bold text-2xl text-white uppercase tracking-widest">
+                {{ __('Manajemen Kamar') }}
             </h2>
-            <a href="{{ route('kamar.create') }}" class="inline-flex items-center px-4 py-2 bg-indigo-600 border border-transparent rounded-md font-semibold text-xs text-white uppercase tracking-widest hover:bg-indigo-700 focus:bg-indigo-700 active:bg-indigo-900 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 transition ease-in-out duration-150">
-                Tambah Kamar
+            <a href="{{ route('kamar.create') }}" class="relative overflow-hidden inline-flex items-center justify-center px-6 py-3 bg-gradient-to-r from-gold-400 to-gold-600 text-kemnaker-900 font-extrabold text-[11px] tracking-[0.2em] uppercase rounded-xl shadow-[0_15px_30px_rgba(212,175,55,0.3)] hover:shadow-[0_20px_40px_rgba(212,175,55,0.5)] hover:-translate-y-1 transition-all duration-300 group/btn">
+                <span class="absolute top-0 left-0 w-full h-full bg-white/40 skew-x-[-45deg] -translate-x-[150%] group-hover/btn:translate-x-[150%] transition-transform duration-700 ease-in-out"></span>
+                <span class="relative z-10 flex items-center gap-2">
+                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6"/></svg>
+                    Tambah Kamar
+                </span>
             </a>
         </div>
     </x-slot>
 
     <div class="py-12">
         <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
-            <div class="bg-white dark:bg-gray-800 overflow-hidden shadow-sm sm:rounded-lg">
-                <div class="p-6 text-gray-900 dark:text-gray-100">
+            <div class="bg-white rounded-[2.5rem] shadow-[0_15px_40px_rgba(23,43,77,0.04)] border border-slate-100 overflow-hidden relative animate-fade-in-up">
+                <div class="absolute -right-20 -top-20 w-64 h-64 bg-gold-200/20 rounded-full blur-3xl pointer-events-none"></div>
+                <div class="p-10 relative z-10">
 
                     @if(session('success'))
-                        <div class="mb-4 bg-green-100 border border-green-400 text-green-700 px-4 py-3 rounded relative" role="alert">
-                            <span class="block sm:inline">{{ session('success') }}</span>
+                        <div class="mb-6 bg-green-50 border-l-4 border-green-500 p-4">
+                            <div class="flex">
+                                <div class="flex-shrink-0">
+                                    <svg class="h-5 w-5 text-green-400" viewBox="0 0 20 20" fill="currentColor">
+                                        <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd" />
+                                    </svg>
+                                </div>
+                                <div class="ml-3">
+                                    <p class="text-sm font-medium text-green-800">{{ session('success') }}</p>
+                                </div>
+                            </div>
                         </div>
                     @endif
 
-                    <div class="overflow-x-auto">
-                        <table class="min-w-full divide-y divide-gray-200 dark:divide-gray-700">
-                            <thead class="bg-gray-50 dark:bg-gray-900">
+                    <div class="overflow-hidden border border-slate-200 rounded-3xl shadow-sm">
+                        <table class="min-w-full divide-y divide-slate-200">
+                            <thead class="bg-slate-50 border-b border-slate-200">
                                 <tr>
-                                    <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Foto</th>
-                                    <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Nama Kamar</th>
-                                    <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Harga</th>
-                                    <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Unit</th>
-                                    <th class="px-6 py-3 text-right text-xs font-medium text-gray-500 uppercase tracking-wider">Aksi</th>
+                                    <th class="px-8 py-5 text-left text-[11px] font-bold text-slate-500 uppercase tracking-widest">Foto</th>
+                                    <th class="px-8 py-5 text-left text-[11px] font-bold text-slate-500 uppercase tracking-widest">Nama Kamar</th>
+                                    <th class="px-8 py-5 text-left text-[11px] font-bold text-slate-500 uppercase tracking-widest">Harga</th>
+                                    <th class="px-8 py-5 text-left text-[11px] font-bold text-slate-500 uppercase tracking-widest">Unit</th>
+                                    <th class="px-8 py-5 text-right text-[11px] font-bold text-slate-500 uppercase tracking-widest">Aksi</th>
                                 </tr>
                             </thead>
-                            <tbody class="bg-white dark:bg-gray-800 divide-y divide-gray-200 dark:divide-gray-700">
+                            <tbody class="bg-white divide-y divide-slate-100">
                                 @forelse($rooms as $room)
-                                    <tr>
-                                        <td class="px-6 py-4 whitespace-nowrap">
+                                    <tr class="hover:bg-slate-50/80 transition-colors duration-200">
+                                        <td class="px-8 py-5 whitespace-nowrap">
                                             @if($room->foto)
-                                                <img src="{{ Storage::url($room->foto) }}" alt="{{ $room->nama }}" class="h-12 w-12 object-cover rounded">
+                                                <div class="w-24 h-16 rounded-xl overflow-hidden shadow-sm border border-slate-200">
+                                                    <img src="{{ Storage::url($room->foto) }}" alt="{{ $room->nama }}" class="w-full h-full object-cover">
+                                                </div>
                                             @else
-                                                <span class="text-gray-400">No Image</span>
+                                                <div class="w-24 h-16 rounded-xl bg-slate-100 flex items-center justify-center text-xs font-medium text-slate-400 border border-slate-200 shadow-inner">Tidak Ada</div>
                                             @endif
                                         </td>
-                                        <td class="px-6 py-4 whitespace-nowrap">
-                                            {{ $room->nama }}
+                                        <td class="px-8 py-5 whitespace-nowrap">
+                                            <span class="font-serif font-bold text-kemnaker-900 text-lg">{{ $room->nama }}</span>
                                         </td>
-                                        <td class="px-6 py-4 whitespace-nowrap">
+                                        <td class="px-8 py-5 whitespace-nowrap text-kemnaker-600 font-extrabold text-sm tracking-wide">
                                             Rp {{ number_format($room->harga, 0, ',', '.') }}
                                         </td>
-                                        <td class="px-6 py-4 whitespace-nowrap">
-                                            {{ $room->jumlah_unit }}
+                                        <td class="px-8 py-5 whitespace-nowrap font-bold text-slate-700">
+                                            {{ $room->jumlah_unit }} <span class="font-normal text-slate-400 text-xs ml-1">Tersedia</span>
                                         </td>
-                                        <td class="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
-                                            <a href="{{ route('kamar.edit', $room->id) }}" class="text-indigo-600 hover:text-indigo-900 dark:hover:text-indigo-400 mr-3">Edit</a>
-                                            <form action="{{ route('kamar.destroy', $room->id) }}" method="POST" class="inline-block" onsubmit="return confirm('Apakah Anda yakin ingin menghapus kamar ini?');">
-                                                @csrf
-                                                @method('DELETE')
-                                                <button type="submit" class="text-red-600 hover:text-red-900 dark:hover:text-red-400">Hapus</button>
-                                            </form>
+                                        <td class="px-8 py-5 whitespace-nowrap text-right text-sm">
+                                            <div class="flex items-center justify-end space-x-3">
+                                                <a href="{{ route('kamar.edit', $room->id) }}" class="inline-flex items-center justify-center w-8 h-8 rounded-lg bg-kemnaker-50 text-kemnaker-600 hover:bg-kemnaker-600 hover:text-white transition-colors duration-200" title="Edit">
+                                                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15.232 5.232l3.536 3.536m-2.036-5.036a2.5 2.5 0 113.536 3.536L6.5 21.036H3v-3.572L16.732 3.732z"/></svg>
+                                                </a>
+                                                <form action="{{ route('kamar.destroy', $room->id) }}" method="POST" class="inline-block" onsubmit="return confirm('Apakah Anda yakin ingin menghapus kamar ini?');">
+                                                    @csrf
+                                                    @method('DELETE')
+                                                    <button type="submit" class="inline-flex items-center justify-center w-8 h-8 rounded-lg bg-red-50 text-red-500 hover:bg-red-500 hover:text-white transition-colors duration-200" title="Hapus">
+                                                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"/></svg>
+                                                    </button>
+                                                </form>
+                                            </div>
                                         </td>
                                     </tr>
                                 @empty
                                     <tr>
-                                        <td colspan="5" class="px-6 py-4 text-center text-gray-500">Belum ada data kamar.</td>
+                                        <td colspan="5" class="px-8 py-20 text-center">
+                                            <div class="flex flex-col items-center justify-center w-full max-w-sm mx-auto p-10 rounded-[2rem] border-2 border-dashed border-slate-200 bg-slate-50/50">
+                                                <div class="w-20 h-20 bg-white rounded-full flex items-center justify-center shadow-sm mb-5">
+                                                    <svg class="w-10 h-10 text-slate-300" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true">
+                                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4" />
+                                                    </svg>
+                                                </div>
+                                                <h3 class="text-xl font-serif font-bold text-kemnaker-900 mb-2">Belum Ada Kamar</h3>
+                                                <p class="text-sm text-slate-500 font-light text-center leading-relaxed mb-6">Sistem belum memiliki data kamar apa pun. Mari mulai dengan menambahkan tipe kamar pertama Anda.</p>
+                                                
+                                                <a href="{{ route('kamar.create') }}" class="inline-flex items-center px-6 py-2.5 bg-kemnaker-900 text-white text-xs font-bold uppercase tracking-widest rounded-xl hover:bg-gold-500 hover:shadow-lg transition-all duration-300">
+                                                    Tambah Data
+                                                </a>
+                                            </div>
+                                        </td>
                                     </tr>
                                 @endforelse
                             </tbody>
                         </table>
                     </div>
                     
-                    <div class="mt-4">
+                    <div class="mt-6">
                         {{ $rooms->links() }}
                     </div>
 

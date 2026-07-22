@@ -1,3 +1,57 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+@layer base {
+  html {
+    scroll-behavior: smooth;
+  }
+  body {
+    @apply font-sans text-slate-800 antialiased;
+  }
+}
+
+@layer utilities {
+  /* Kemnaker glass effect */
+  .glass-kemnaker {
+    @apply bg-kemnaker-600/80 backdrop-blur-md border border-kemnaker-500/30 shadow-xl;
+  }
+  .glass-light {
+    @apply bg-white/80 backdrop-blur-md border border-kemnaker-200 shadow-xl;
+  }
+
+  /* Text gradients Kemnaker */
+  .text-gradient-kemnaker {
+    @apply bg-clip-text text-transparent bg-gradient-to-r from-kemnaker-600 to-kemnaker-400;
+  }
+  .text-gradient-gold {
+    @apply bg-clip-text text-transparent bg-gradient-to-r from-gold-500 to-gold-300;
+  }
+
+  /* Admin table helpers */
+  .admin-table-header {
+    @apply px-6 py-4 text-left text-xs font-bold text-kemnaker-100 uppercase tracking-widest;
+  }
+  .admin-table-cell {
+    @apply px-6 py-4 text-sm text-slate-700;
+  }
+  .admin-card {
+    @apply bg-white shadow-lg border border-kemnaker-100 overflow-hidden;
+  }
+
+  /* Buttons */
+  .btn-kemnaker {
+    @apply inline-flex items-center px-5 py-2.5 bg-kemnaker-600 text-white font-semibold text-xs uppercase tracking-widest hover:bg-kemnaker-700 active:bg-kemnaker-800 focus:outline-none transition duration-200 shadow-kemnaker;
+  }
+  .btn-gold {
+    @apply inline-flex items-center px-5 py-2.5 bg-gold-500 text-white font-semibold text-xs uppercase tracking-widest hover:bg-gold-600 active:bg-gold-700 focus:outline-none transition duration-200 shadow-gold;
+  }
+  .btn-outline-kemnaker {
+    @apply inline-flex items-center px-5 py-2.5 border-2 border-kemnaker-600 text-kemnaker-600 font-semibold text-xs uppercase tracking-widest hover:bg-kemnaker-600 hover:text-white transition duration-200;
+  }
+
+  /* Alert success */
+  .alert-success {
+    @apply mb-6 bg-green-50 border-l-4 border-green-500 p-4 flex items-start;
+  }
+}
