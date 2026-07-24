@@ -2,8 +2,10 @@
 ini_set('display_errors', 1);
 error_reporting(E_ALL);
 
-require __DIR__ . '/../vendor/autoload.php';
-$app = require_once __DIR__ . '/../bootstrap/app.php';
+require __DIR__ . '/vendor/autoload.php';
+
+// Ambil instansiasi aplikasi Laravel
+$app = require_once __DIR__ . '/bootstrap/app.php';
 
 // Buat struktur folder sementara di /tmp khusus untuk Vercel
 $storagePath = '/tmp/storage';
